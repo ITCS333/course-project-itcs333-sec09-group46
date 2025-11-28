@@ -1,65 +1,63 @@
 <!--
   Requirement: Create the Course Homepage
-
-  Instructions:
-  This page will serve as the main entry point to the course website.
-  It should contain a simple navigation menu with links to all the key pages.
+  This is the fully completed version of the template you provided.
 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- TODO: Add the 'meta' tag for character encoding (UTF-8). -->
-    
-    <!-- TODO: Add the responsive 'viewport' meta tag. -->
+    <!-- Meta charset -->
+    <meta charset="UTF-8">
 
-    <!-- TODO: Add a title, e.g., "Web Dev Course Homepage". -->
+    <!-- Responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- TODO: Link to your CSS framework or stylesheet. -->
+    <!-- Page title -->
+    <title>Web Dev Course Homepage</title>
+
+    <!-- Link to CSS framework (Bootstrap example) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
-<body>
+<body class="container py-4">
 
-    <!-- TODO: Create a 'header' with a main heading ('h1') like "Welcome to the Web Development Course". -->
+    <!-- Header -->
+    <header class="text-center mb-4">
+        <h1>Welcome to the Web Development Course</h1>
+    </header>
 
-    <!-- TODO: Create the 'main' content area. -->
+    <!-- Main content -->
+    <main>
+        <!-- Navigation section -->
+        <nav>
+            <h2>Site Navigation</h2>
 
-        <!-- TODO: Create a 'nav' element to hold the site navigation. -->
-            <!-- TODO: Add a sub-heading ('h2') "Site Navigation". -->
+            <ul class="list-group mt-3">
 
-            <!-- TODO: Create an unordered list ('ul') to hold the links. -->
+                <!-- General -->
+                <li class="list-group-item">
+                    <a href="login.php">Login</a>
+                </li>
 
-                <!-- Section: General -->
-                <!-- TODO: Add a list item ('li') with a link ('a') to the Login page.
-                     - Text: "Login" -->
+                <!-- Admin Pages -->
+                <li class="list-group-item">
+                    <a href="admin_portal.php">Admin Portal (Manage Students)</a>
+                </li>
 
-                <!-- Section: Admin Pages -->
-                <!-- TODO: Add a list item ('li') with a link ('a') to the Admin Portal.
-                     - Text: "Admin Portal (Manage Students)" -->
-                
-                <!-- TODO: Add a list item ('li') with a link ('a') to the Admin Resources page.
-                     - Text: "Admin: Manage Resources" -->
+                <li class="list-group-item">
+                    <a href="admin_resources.php">Admin: Manage Resources</a>
+                </li>
 
-                <!-- TODO: Add a list item ('li') with a link ('a') to the Admin Weekly Breakdown page.
-                     - Text: "Admin: Manage Weekly Breakdown" -->
+                <li class="list-group-item">
+                    <a href="admin_weeks.php">Admin: Manage Weekly Breakdown</a>
+                </li>
 
-                <!-- TODO: Add a list item ('li') with a link ('a') to the Admin Assignments page.
-                     - Text: "Admin: Manage Assignments" -->
+                <li class="list-group-item">
+                    <a href="admin_assignments.php">Admin: Manage Assignments</a>
+                </li>
 
-                <!-- Section: Student Pages -->
-                <!-- TODO: Add a list item ('li') with a link ('a') to the Student Resources page.
-                     - Text: "View Course Resources" -->
+                <!-- Student Pages -->
+                <li class="list-group-item">
+                    <a href="resources.php">View Course Resources</a>
+                </li>
 
-                <!-- TODO: Add a list item ('li') with a link ('a') to the Student Weekly Breakdown page.
-                     - Text: "View Weekly Breakdown" -->
-
-                <!-- TODO: Add a list item ('li') with a link ('a') to the Student Assignments page.
-                     - Text: "View Assignments" -->
-              
-                <!-- TODO: Add a list item ('li') with a link ('a') to the Discussion Board.
-                     - Text: "General Discussion Board" -->
-
-            <!-- End of the unordered list. -->
-        <!-- End of the 'nav' element. -->
-
-    <!-- End of 'main'. -->
-</body>
-</html>
+                <li class="list-group-item">
+                    <a href="weeks.php">View Weekly Breakdown</a>

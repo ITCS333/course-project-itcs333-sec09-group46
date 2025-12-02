@@ -1,31 +1,29 @@
-CREATE DATABASE IF NOT EXISTS itcs333_course CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE itcs333_course;
+CREATE DATABASE IF NOT EXISTS course_db
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
 
+USE course_db;
 
--- جدول المستخدمين
+-- جدول الأدمن (teachers/admin)
 CREATE TABLE IF NOT EXISTS users (
-id INT AUTO_INCREMENT PRIMARY KEY,
-name VARCHAR(100) NOT NULL,
-student_id VARCHAR(50),
-email VARCHAR(150) NOT NULL UNIQUE,
-password VARCHAR(255) NOT NULL,
-role ENUM('admin','student') NOT NULL DEFAULT 'student',
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB;
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
 
+-- أدمن افتراضي
+-- username: admin
+-- password: admin123
+INSERT INTO users (username, password)
+VALUES ('admin', MD5('admin123'));
 
--- جدول تعليقات (للاحق)
-CREATE TABLE IF NOT EXISTS comments (
-id INT AUTO_INCREMENT PRIMARY KEY,
-user_id INT NOT NULL,
-resource_type VARCHAR(50) DEFAULT 'resource',
-resource_id INT DEFAULT NULL,
-comment TEXT NOT NULL,
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-) ENGINE=InnoDB;
-
-
--- مثال حساب مشرف
-INSERT INTO users (name, student_id, email, password, role)
-VALUES ('Course Admin', 'T001', 'admin@course.local', '" + md5("CS333-group46") + "', 'admin');
+-- جدول الطلاب
+CREATE TABLE IF NOT EXISTS students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id VARCHAR(20) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    UNIQUE (student_id),
+    UNIQUE (email)
+);

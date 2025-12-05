@@ -9,3 +9,4 @@
 ## Manar Adel - Task1 , Rahaf Nabil - Task2 , Reem Isa - Task3.
 
 ## [A link to hosted application on Replit.](https://replit.com/@manaralkuwaiti1/ITCS333-Course-Project46?v=1)
+## [A link to hosted application on Localhost.](https://fe20c67f-2657-4319-b639-8e6e5a12ce1e-00-22qm08iymh6tw.sisko.replit.dev:5000/)

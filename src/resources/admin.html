@@ -1,87 +1,83 @@
-<!--
-  Requirement: Create the Admin View for Course Resources
-
-  Instructions:
-  Fill in the HTML elements as described in the comments.
-  This page allows the teacher (admin) to perform full CRUD operations on course resources.
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- TODO: Add the 'meta' tag for character encoding (UTF-8). -->
-    
-    <!-- TODO: Add the responsive 'viewport' meta tag.
-         The 'name' should be 'viewport' and the 'content' should set the 'width' to 'device-width'
-         and the 'initial-scale' to '1.0'. -->
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <title>Manage Resources</title>
 
-    <!-- TODO: Add a title, e.g., "Manage Resources". -->
-
-    <!-- TODO: Link to your CSS framework or stylesheet. -->
+    <!-- Simple shared stylesheet (adjust path if needed) -->
+    <link rel="stylesheet" href="../common/styles.css">
 </head>
 <body>
+    <header>
+        <h1>Manage Course Resources</h1>
+    </header>
 
-    <!-- TODO: Create a 'header' with a main heading ('h1') "Manage Course Resources". -->
-
-    <!-- TODO: Create the 'main' content area. -->
-
+    <main>
         <!-- Section 1: Add/Edit Resource Form -->
-        <!-- TODO: Create a 'section' for the form. -->
-            <!-- TODO: Add a sub-heading ('h2') "Add a New Resource". -->
+        <section>
+            <h2>Add / Edit Resource</h2>
 
-            <!-- TODO: Create a 'form' with an id "resource-form". Action can be '#'. -->
-                <!-- TODO: Use a 'fieldset' to group the form controls. -->
-                    <!-- TODO: Add a 'legend', e.g., "Resource Details". -->
+            <form id="resource-form" action="#">
+                <fieldset>
+                    <legend>Resource Details</legend>
 
-                    <!-- TODO: Add a 'label' and 'input' for the resource title.
-                         - label 'for': "resource-title"
-                         - input 'id': "resource-title", type="text", required -->
+                    <!-- Hidden field to track edit vs create -->
+                    <input type="hidden" id="resource-id">
 
-                    <!-- TODO: Add a 'label' and 'textarea' for the resource description.
-                         - label 'for': "resource-description"
-                         - textarea 'id': "resource-description" -->
-                    
-                    <!-- TODO: Add a 'label' and 'input' for the resource link.
-                         - label 'for': "resource-link"
-                         - input 'id': "resource-link", type="url", required -->
+                    <label for="resource-title">Title</label>
+                    <input
+                        id="resource-title"
+                        type="text"
+                        required
+                    >
 
-                    <!-- TODO: Add a 'button' to submit the form.
-                         - id="add-resource", type="submit", Text: "Add Resource" -->
-                <!-- End of fieldset. -->
-            <!-- End of form. -->
-        <!-- End of form section. -->
+                    <label for="resource-description">Description</label>
+                    <textarea
+                        id="resource-description"
+                        rows="4"
+                    ></textarea>
 
+                    <label for="resource-link">Resource Link (URL)</label>
+                    <input
+                        id="resource-link"
+                        type="url"
+                        required
+                    >
+
+                    <button id="submit-resource" type="submit">
+                        Add Resource
+                    </button>
+                    <button id="cancel-edit" type="button" style="display:none;">
+                        Cancel Edit
+                    </button>
+                </fieldset>
+            </form>
+        </section>
 
         <!-- Section 2: Existing Resources List -->
-        <!-- TODO: Create a 'section' to display the list of current resources. -->
-            <!-- TODO: Add a sub-heading ('h2') "Existing Resources". -->
+        <section>
+            <h2>Existing Resources</h2>
 
-            <!-- TODO: Create a 'table' with id "resources-table". -->
-                <!-- TODO: Create a 'thead' and a 'tr' inside it. -->
-                    <!-- TODO: Add 'th' elements for "Title", "Description", and "Actions". -->
-                
-                <!-- TODO: Create a 'tbody' for the data. -->
-                    <!-- TODO: Add 2-3 rows of dummy data to see the structure. -->
-                    <!-- Example Row 1: -->
-                    <!-- TODO: Create a 'tr' for the first resource. -->
-                        <!-- TODO: Add 'td' cells for a title (e.g., "Chapter 1 Notes") and a description. -->
-                        
-                        <!-- TODO: Add a 'td' containing the action buttons. -->
-                            <!-- TODO: Add an "Edit" button. -->
-                            <!-- TODO: Add a "Delete" button. -->
-                        <!-- End of actions 'td'. -->
-                    <!-- End of the row. -->
+            <table id="resources-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Link</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="resources-tbody">
+                    <!-- Filled dynamically by admin.js -->
+                </tbody>
+            </table>
+        </section>
+    </main>
 
-                    <!-- Example Row 2: -->
-                    <!-- TODO: Create another 'tr' for a second resource (e.g., a web link). -->
-                        <!-- TODO: Add 'td' cells for the title and description. -->
-                        <!-- TODO: Add a 'td' with "Edit" and "Delete" buttons. -->
-                    <!-- End of the row. -->
-
-                <!-- End of tbody. -->
-            <!-- End of table. -->
-        <!-- End of resources list section. -->
-
-    <!-- End of main. -->
+    <script src="admin.js" defer></script>
 </body>
 </html>
-

@@ -20,6 +20,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
 <p class="text-muted">This is your student homepage.</p>
 
 <a href="index.php" class="btn btn-secondary">Home</a>
+<a href="resources/list.html" class="btn btn-primary">Course Resources</a>
 <a href="logout.php" class="btn btn-danger">Logout</a>
 
 </body>

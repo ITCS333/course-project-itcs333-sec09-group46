@@ -2,13 +2,10 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=20976773&assignment_repo_type=AssignmentRepo)
 # ITCS333 Course Page
 
-## Name : Manar Adel Mansoor
-## ID : 202008178
-## Name : Rahaf NABIL Hassan shehada
-## ID : 202100819
-## Name : Reem Isa
-## ID : 202006941
+## Name : Manar Adel Mansoor - ID : 202008178
+## Name : Rahaf NABIL Hassan shehada - ID : 202100819
+## Name : Reem Isa - ID : 202006941
 
 ## Manar Adel - Task1 , Rahaf Nabil - Task2 , Reem Isa - Task3.
 
-## [A link to your live, hosted application on Replit.](https://replit.com/@manaralkuwaiti1/ITCS333-Course-Project46?v=1)
+## [A link to hosted application on Replit.](https://replit.com/@manaralkuwaiti1/ITCS333-Course-Project46?v=1)

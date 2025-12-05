@@ -15,6 +15,7 @@ $students = get_students($pdo);
 
 <a href="students_create.php">Add New Student</a> |
 <a href="admin_change_password.php">Change Password</a> |
+<a href="../resources/admin.html">Manage Resources</a> |
 <a href="logout.php">Logout</a>
 
 <h2>Students</h2>

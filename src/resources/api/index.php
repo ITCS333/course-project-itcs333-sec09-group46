@@ -43,19 +43,46 @@ if (!isset($db) || !($db instanceof PDO)) {
 }
 
 // -----------------------------------------------------------------------------
-// AUTH CHECKS
+// AUTH CHECKS – support both student_home.php and admin portal session styles
 // -----------------------------------------------------------------------------
-// Adjust these if Manar uses different session keys.
-$isLoggedIn = isset($_SESSION['user_id']);
-$isAdmin    = !empty($_SESSION['is_admin']); // expects 0/1 from `users.is_admin`
 
-// For this project:
-// - Students & teacher must be logged in to use this API at all.
-// - Admin-only operations: create/update/delete resources, delete comments.
+$userId   = null;
+$userName = null;
+$userRole = null;
+$isAdmin  = false;
+
+// Pattern 1: student_home.php
+//   $_SESSION['user_id'], $_SESSION['role'], $_SESSION['username']
+if (isset($_SESSION['user_id'])) {
+    $userId   = $_SESSION['user_id'];
+    $userName = $_SESSION['username'] ?? null;
+    $userRole = $_SESSION['role'] ?? null;
+
+    if ($userRole === 'admin') {
+        $isAdmin = true;
+    }
+}
+
+// Pattern 2: admin portal using $_SESSION['user'] array
+//   $_SESSION['user']['id'], $_SESSION['user']['name'], $_SESSION['user']['is_admin']
+if (isset($_SESSION['user']) && is_array($_SESSION['user'])) {
+    $userId   = $_SESSION['user']['id']   ?? $userId;
+    $userName = $_SESSION['user']['name'] ?? $userName;
+
+    if (isset($_SESSION['user']['is_admin'])) {
+        $isAdmin = !empty($_SESSION['user']['is_admin']);
+    } else {
+        // If this admin portal doesn't store is_admin, we still treat this as admin area
+        $isAdmin = true;
+    }
+}
+
+$isLoggedIn = !empty($userId);
 
 if (!$isLoggedIn) {
     sendResponse(['success' => false, 'message' => 'Not authenticated'], 401);
 }
+
 
 // -----------------------------------------------------------------------------
 // REQUEST PARSING
@@ -451,7 +478,9 @@ function createComment(PDO $db, array $data)
     }
 
     // Author: from session (preferred) or fallback
-    $author = isset($_SESSION['user_name']) ? trim($_SESSION['user_name']) : 'Student';
+    global $userName;
+    $author = $userName ? trim($userName) : 'Student';
+
     $text   = sanitizeInput($data['text']);
 
     if ($text === '') {

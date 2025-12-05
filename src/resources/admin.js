@@ -1,95 +1,215 @@
 /*
-  Requirement: Make the "Manage Resources" page interactive.
-
-  Instructions:
-  1. Link this file to `admin.html` using:
-     <script src="admin.js" defer></script>
-  
-  2. In `admin.html`, add an `id="resources-tbody"` to the <tbody> element
-     inside your `resources-table`.
-  
-  3. Implement the TODOs below.
+  Admin Resources Page
+  - Uses src/resources/api/index.php
+  - Admin can create, edit, delete resources
 */
 
-// --- Global Data Store ---
-// This will hold the resources loaded from the JSON file.
+const apiBase = 'api/index.php';
+
+// --- Global State ---
 let resources = [];
+let editingId = null;
 
 // --- Element Selections ---
-// TODO: Select the resource form ('#resource-form').
+const resourceForm       = document.querySelector('#resource-form');
+const resourceIdInput    = document.querySelector('#resource-id');
+const resourceTitleInput = document.querySelector('#resource-title');
+const resourceDescInput  = document.querySelector('#resource-description');
+const resourceLinkInput  = document.querySelector('#resource-link');
+const submitButton       = document.querySelector('#submit-resource');
+const cancelEditButton   = document.querySelector('#cancel-edit');
+const resourcesTableBody = document.querySelector('#resources-tbody');
 
-// TODO: Select the resources table body ('#resources-tbody').
+// --- Helpers ---
 
-// --- Functions ---
-
-/**
- * TODO: Implement the createResourceRow function.
- * It takes one resource object {id, title, description}.
- * It should return a <tr> element with the following <td>s:
- * 1. A <td> for the `title`.
- * 2. A <td> for the `description`.
- * 3. A <td> containing two buttons:
- * - An "Edit" button with class "edit-btn" and `data-id="${id}"`.
- * - A "Delete" button with class "delete-btn" and `data-id="${id}"`.
- */
 function createResourceRow(resource) {
-  // ... your implementation here ...
+  const tr = document.createElement('tr');
+
+  const titleTd = document.createElement('td');
+  titleTd.textContent = resource.title;
+
+  const descTd = document.createElement('td');
+  descTd.textContent = resource.description || '';
+
+  const linkTd = document.createElement('td');
+  const linkA = document.createElement('a');
+  linkA.href = resource.link;
+  linkA.textContent = 'Open';
+  linkA.target = '_blank';
+  linkTd.appendChild(linkA);
+
+  const actionsTd = document.createElement('td');
+
+  const editBtn = document.createElement('button');
+  editBtn.textContent = 'Edit';
+  editBtn.classList.add('edit-btn');
+  editBtn.dataset.id = resource.id;
+
+  const deleteBtn = document.createElement('button');
+  deleteBtn.textContent = 'Delete';
+  deleteBtn.classList.add('delete-btn');
+  deleteBtn.dataset.id = resource.id;
+
+  actionsTd.appendChild(editBtn);
+  actionsTd.appendChild(deleteBtn);
+
+  tr.appendChild(titleTd);
+  tr.appendChild(descTd);
+  tr.appendChild(linkTd);
+  tr.appendChild(actionsTd);
+
+  return tr;
 }
 
-/**
- * TODO: Implement the renderTable function.
- * It should:
- * 1. Clear the `resourcesTableBody`.
- * 2. Loop through the global `resources` array.
- * 3. For each resource, call `createResourceRow()`, and
- * append the resulting <tr> to `resourcesTableBody`.
- */
 function renderTable() {
-  // ... your implementation here ...
+  resourcesTableBody.innerHTML = '';
+
+  resources.forEach((res) => {
+    const row = createResourceRow(res);
+    resourcesTableBody.appendChild(row);
+  });
 }
 
-/**
- * TODO: Implement the handleAddResource function.
- * This is the event handler for the form's 'submit' event.
- * It should:
- * 1. Prevent the form's default submission.
- * 2. Get the values from the title, description, and link inputs.
- * 3. Create a new resource object with a unique ID (e.g., `id: \`res_${Date.now()}\``).
- * 4. Add this new resource object to the global `resources` array (in-memory only).
- * 5. Call `renderTable()` to refresh the list.
- * 6. Reset the form.
- */
-function handleAddResource(event) {
-  // ... your implementation here ...
+// --- API Calls ---
+
+async function fetchResources() {
+  const response = await fetch(apiBase);
+  const json = await response.json();
+  if (!json.success) {
+    alert(json.message || 'Failed to load resources');
+    return;
+  }
+  resources = json.data || [];
+  renderTable();
 }
 
-/**
- * TODO: Implement the handleTableClick function.
- * This is an event listener on the `resourcesTableBody` (for delegation).
- * It should:
- * 1. Check if the clicked element (`event.target`) has the class "delete-btn".
- * 2. If it does, get the `data-id` attribute from the button.
- * 3. Update the global `resources` array by filtering out the resource
- * with the matching ID (in-memory only).
- * 4. Call `renderTable()` to refresh the list.
- */
+async function createResource(data) {
+  const response = await fetch(apiBase, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  const json = await response.json();
+  if (!json.success) {
+    throw new Error(json.message || 'Failed to create resource');
+  }
+}
+
+async function updateResource(data) {
+  const response = await fetch(apiBase, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  const json = await response.json();
+  if (!json.success) {
+    throw new Error(json.message || 'Failed to update resource');
+  }
+}
+
+async function deleteResource(id) {
+  const response = await fetch(`${apiBase}?id=${encodeURIComponent(id)}`, {
+    method: 'DELETE',
+  });
+  const json = await response.json();
+  if (!json.success) {
+    throw new Error(json.message || 'Failed to delete resource');
+  }
+}
+
+// --- Event Handlers ---
+
+async function handleAddResource(event) {
+  event.preventDefault();
+
+  const title = resourceTitleInput.value.trim();
+  const description = resourceDescInput.value.trim();
+  const link = resourceLinkInput.value.trim();
+
+  if (!title || !link) {
+    alert('Title and Link are required.');
+    return;
+  }
+
+  const payload = { title, description, link };
+
+  try {
+    if (editingId === null) {
+      // Create
+      await createResource(payload);
+    } else {
+      // Update
+      payload.id = editingId;
+      await updateResource(payload);
+    }
+
+    await fetchResources(); // refresh list
+    resetFormState();
+  } catch (err) {
+    alert(err.message);
+  }
+}
+
 function handleTableClick(event) {
-  // ... your implementation here ...
+  const target = event.target;
+
+  if (target.classList.contains('delete-btn')) {
+    const id = target.dataset.id;
+    if (!id) return;
+
+    if (confirm('Are you sure you want to delete this resource?')) {
+      deleteResource(id)
+        .then(fetchResources)
+        .catch((err) => alert(err.message));
+    }
+  }
+
+  if (target.classList.contains('edit-btn')) {
+    const id = target.dataset.id;
+    if (!id) return;
+
+    const resource = resources.find((r) => String(r.id) === String(id));
+    if (!resource) {
+      alert('Resource not found in local list.');
+      return;
+    }
+
+    // Fill form for editing
+    editingId = resource.id;
+    resourceIdInput.value = resource.id;
+    resourceTitleInput.value = resource.title;
+    resourceDescInput.value = resource.description || '';
+    resourceLinkInput.value = resource.link;
+
+    submitButton.textContent = 'Save Changes';
+    cancelEditButton.style.display = 'inline-block';
+  }
 }
 
-/**
- * TODO: Implement the loadAndInitialize function.
- * This function needs to be 'async'.
- * It should:
- * 1. Use `fetch()` to get data from 'resources.json'.
- * 2. Parse the JSON response and store the result in the global `resources` array.
- * 3. Call `renderTable()` to populate the table for the first time.
- * 4. Add the 'submit' event listener to `resourceForm` (calls `handleAddResource`).
- * 5. Add the 'click' event listener to `resourcesTableBody` (calls `handleTableClick`).
- */
-async function loadAndInitialize() {
-  // ... your implementation here ...
+function resetFormState() {
+  editingId = null;
+  resourceIdInput.value = '';
+  resourceTitleInput.value = '';
+  resourceDescInput.value = '';
+  resourceLinkInput.value = '';
+  submitButton.textContent = 'Add Resource';
+  cancelEditButton.style.display = 'none';
 }
+
+// --- Initialization ---
+
+async function loadAndInitialize() {
+  // attach listeners
+  resourceForm.addEventListener('submit', handleAddResource);
+  resourcesTableBody.addEventListener('click', handleTableClick);
+  cancelEditButton.addEventListener('click', resetFormState);
+
+  // initial load
+  await fetchResources();
+}
+
+loadAndInitialize();
+
 
 // --- Initial Page Load ---
 // Call the main async function to start the application.

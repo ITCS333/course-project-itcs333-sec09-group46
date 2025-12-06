@@ -3,7 +3,7 @@
 
 session_start();
 
-require_once '../connection.php'; // هذا يعطيك $conn من mysqli_connect
+require_once '../connection.php'; 
 
 if (!$conn) {
     die("Database connection error.");

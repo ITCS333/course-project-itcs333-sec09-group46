@@ -42,3 +42,24 @@ CREATE TABLE comments_resource (
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (resource_id) REFERENCES resources(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+-- جدول الأسابيع الخاصة بتقسيم المادة Week-by-Week
+CREATE TABLE IF NOT EXISTS weeks (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    start_date DATE NOT NULL,
+    description TEXT,
+    links TEXT,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- جدول التعليقات على كل أسبوع
+CREATE TABLE IF NOT EXISTS week_comments (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    week_id INT UNSIGNED NOT NULL,
+    author_name VARCHAR(100) NOT NULL,
+    user_type VARCHAR(20) NOT NULL, -- 'admin' أو 'student'
+    comment_text TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (week_id) REFERENCES weeks(id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);

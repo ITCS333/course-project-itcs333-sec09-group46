@@ -21,6 +21,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
 
 <a href="index.php" class="btn btn-secondary">Home</a>
 <a href="resources/list.html" class="btn btn-primary">Course Resources</a>
+<a href="weekly/list.php">Weekly Breakdown</a>
 <a href="logout.php" class="btn btn-danger">Logout</a>
 
 </body>

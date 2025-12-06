@@ -1,5 +1,4 @@
 <?php
-// src/weekly/list.php
 
 session_start();
 require_once '../connection.php';

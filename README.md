@@ -6,6 +6,9 @@
 ## Name : Rahaf NABIL Hassan shehada - ID : 202100819
 ## Name : Reem Isa - ID : 202006941
 
+#admin/instructor acc, admin@uob.edu.bh , password
+#st acc , 202100819@stu.uob.edu.bh , password
+
 ## Manar Adel - Task1 , Rahaf Nabil - Task2 , Reem Isa - Task3.
 
 ## [A link to the application on Replit.](https://replit.com/@manaralkuwaiti1/ITCS333-Course-Project46?v=1)

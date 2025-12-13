@@ -2,7 +2,7 @@ const listSection = document.querySelector('#resource-list-section');
 
 function createResourceArticle(resource) {
   const article = document.createElement('article');
-
+  
   article.innerHTML = `
     <h3>${resource.title}</h3>
     <p>${resource.description || ''}</p>

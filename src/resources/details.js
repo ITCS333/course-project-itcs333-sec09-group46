@@ -18,18 +18,26 @@ const resourceLink        = document.querySelector('#resource-link');
 const commentList         = document.querySelector('#comment-list');
 const commentForm         = document.querySelector('#comment-form');
 const newComment          = document.querySelector('#new-comment');
+const backButton          = document.querySelector('#back-button');
 
-// --- Functions ---
+function getParams() {
+  return new URLSearchParams(window.location.search);
+}
 
 function getResourceIdFromURL() {
-  const params = new URLSearchParams(window.location.search);
+  const params = getParams();
   return params.get('id');
 }
 
+function getFromParam() {
+  const params = getParams();
+  return params.get('from'); // e.g. "student" or "admin"
+}
+
 function renderResourceDetails(resource) {
-  resourceTitle.textContent = resource.title;
+  resourceTitle.textContent       = resource.title;
   resourceDescription.textContent = resource.description || '';
-  resourceLink.href = resource.link;
+  resourceLink.href               = resource.link;
 }
 
 function createCommentArticle(comment) {
@@ -73,27 +81,26 @@ async function loadResourceAndComments() {
   currentResourceId = id;
 
   if (!id) {
-    resourceTitle.textContent = 'Resource not found.';
+    resourceTitle.textContent       = 'Resource not found.';
     resourceDescription.textContent = '';
-    resourceLink.href = '#';
-    commentList.textContent = '';
+    resourceLink.href               = '#';
+    commentList.textContent         = '';
     return;
   }
 
   try {
-    // Fetch resource and comments in parallel
     const [resResource, resComments] = await Promise.all([
       fetch(`${apiBase}?id=${encodeURIComponent(id)}`),
       fetch(`${apiBase}?action=comments&resource_id=${encodeURIComponent(id)}`)
     ]);
 
-    const jsonResource  = await resResource.json();
-    const jsonComments  = await resComments.json();
+    const jsonResource = await resResource.json();
+    const jsonComments = await resComments.json();
 
     if (!jsonResource.success) {
-      resourceTitle.textContent = jsonResource.message || 'Resource not found.';
+      resourceTitle.textContent       = jsonResource.message || 'Resource not found.';
       resourceDescription.textContent = '';
-      resourceLink.href = '#';
+      resourceLink.href               = '#';
     } else {
       renderResourceDetails(jsonResource.data);
     }
@@ -107,7 +114,7 @@ async function loadResourceAndComments() {
   } catch (err) {
     console.error(err);
     resourceTitle.textContent = 'Error loading resource.';
-    commentList.textContent = 'Error loading comments.';
+    commentList.textContent   = 'Error loading comments.';
   }
 }
 
@@ -122,7 +129,7 @@ async function handleAddComment(event) {
     return;
   }
 
-  try:
+  try {
     const response = await fetch(`${apiBase}?action=comment`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -138,9 +145,7 @@ async function handleAddComment(event) {
       return;
     }
 
-    // Reload comments from server
     await loadCommentsOnly();
-
     newComment.value = '';
   } catch (err) {
     console.error(err);
@@ -170,10 +175,38 @@ async function loadCommentsOnly() {
   }
 }
 
+/* -----------------------------
+   Back button behaviour
+   ----------------------------- */
+function handleBackClick() {
+  const from = getFromParam();
+
+  // Explicit from=... if you ever add it in links
+  if (from === 'admin') {
+    window.location.href = '/admin/admin_courses.php';
+    return;
+  }
+  if (from === 'student') {
+    window.location.href = '/task2/list.php';
+    return;
+  }
+
+  // Otherwise, use referrer or history
+  if (document.referrer && document.referrer !== window.location.href) {
+    window.location.href = document.referrer;
+  } else {
+    window.history.back();
+  }
+}
+
 // --- Initialization ---
 async function initializePage() {
   await loadResourceAndComments();
   commentForm.addEventListener('submit', handleAddComment);
+
+  if (backButton) {
+    backButton.addEventListener('click', handleBackClick);
+  }
 }
 
 initializePage();

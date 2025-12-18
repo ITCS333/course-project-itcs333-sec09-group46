@@ -6,22 +6,87 @@
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
-    <title>Course Resources</title>
+    <title>Manage Resources</title>
 
+    <!-- Simple shared stylesheet (adjust path if needed) -->
     <link rel="stylesheet" href="../common/styles.css">
 </head>
 <body>
     <header>
-        <h1>Course Resources</h1>
+        <h1>Manage Course Resources</h1>
     </header>
 
     <main>
-        <section id="resource-list-section">
-            <!-- Filled dynamically by list.js -->
+        <!-- Section 1: Add/Edit Resource Form -->
+        <section>
+            <h2>Add / Edit Resource</h2>
+
+            <form id="resource-form" action="#">
+                <fieldset>
+                    <legend>Resource Details</legend>
+
+                    <!-- Hidden field to track edit vs create -->
+                    <input type="hidden" id="resource-id">
+
+                    <label for="resource-title">Title</label>
+                    <input
+                        id="resource-title"
+                        type="text"
+                        required
+                    >
+
+                    <label for="resource-description">Description</label>
+                    <textarea
+                        id="resource-description"
+                        rows="4"
+                    ></textarea>
+
+                    <label for="resource-link">Resource Link (URL)</label>
+                    <input
+                        id="resource-link"
+                        type="url"
+                        required
+                    >
+
+                    <!-- Thumbnail URL -->
+                    <label for="resource-thumbnail">Thumbnail Image URL</label>
+                    <input
+                        id="resource-thumbnail"
+                        type="url"
+                        class="form-control"
+                        placeholder="https://example.com/image.jpg"
+                    />
+
+                    <button id="submit-resource" type="submit">
+                        Add Resource
+                    </button>
+                    <button id="cancel-edit" type="button" style="display:none;">
+                        Cancel Edit
+                    </button>
+                </fieldset>
+            </form>
+        </section>
+
+        <!-- Section 2: Existing Resources List -->
+        <section>
+            <h2>Existing Resources</h2>
+
+            <table id="resources-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Link</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="resources-tbody">
+                    <!-- Filled dynamically by admin.js -->
+                </tbody>
+            </table>
         </section>
     </main>
 
-    <script src="list.js" defer></script>
+    <script src="admin.js" defer></script>
 </body>
 </html>
-
